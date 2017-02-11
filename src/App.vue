@@ -71,7 +71,7 @@ export default {
       let t = ''
       this.matrix.forEach((elm, index) => {
         elm.forEach((mas, masIndex) => {
-          t += `<span>${mas}</span>`
+          t += `<span>${mas.data}</span>`
         })
         t += '<br>'
       })

@@ -1,38 +1,47 @@
 import {shuffle} from 'lodash'
 
+const rewrite = (mas) => {
+  if (mas.data === '*') mas
+}
+
 export const calculate = (arr, width) => {
-  arr = arr.map((elm, index) => {
-    let result = 0
-    const isLineStart = index % width === 0
-    const isLineEnd = index % width === (width - 1)
+  let _arr = []
+  arr.forEach((row, rowIndex) => {
+    row.forEach((mas, colIndex) => {
 
-    if (elm === '*') return elm
-    const near9 = index - (width + 1)
-    if (arr[near9]) result += (arr[near9] === '*' ? 1 : 0)
-    const near8 = index - (width + 0)
-    if (arr[near8]) result += (arr[near8] === '*' ? 1 : 0)
-    const near7 = index - (width - 1)
-    if (arr[near7]) result += (arr[near7] === '*' ? 1 : 0)
+      if (mas.data !== '*') {
+        let result = 0
 
-    if (!isLineStart) {
-      const near6 = index - 1
-      if (arr[near6]) result += (arr[near6] === '*' ? 1 : 0)
-    }
+        // 上の行
+        if (arr[rowIndex - 1]) {
+          const topLeft = arr[rowIndex - 1][colIndex - 1]
+          if (topLeft && topLeft.data === '*') result += 1
+          const topRight = arr[rowIndex - 1][colIndex + 1]
+          if (topRight && topRight.data === '*') result += 1
+          const topCenter = arr[rowIndex - 1][colIndex]
+          if (topCenter && topCenter.data === '*') result += 1
+        }
 
-    if (!isLineEnd) {
-      const near4 = index + 1
-      if (arr[near4]) result += (arr[near4] === '*' ? 1 : 0)
-    }
+        const left = arr[rowIndex][colIndex - 1]
+        if (left && left.data === '*') result += 1
+        const right = arr[rowIndex][colIndex + 1]
+        if (right && right.data === '*') result += 1
 
-    const near3 = index + (width - 1)
-    if (arr[near3]) result += (arr[near3] === '*' ? 1 : 0)
-    const near2 = index + (width + 0)
-    if (arr[near2]) result += (arr[near2] === '*' ? 1 : 0)
-    const near1 = index + (width + 1)
-    if (arr[near1]) result += (arr[near1] === '*' ? 1 : 0)
+        // 下の行
+        if (arr[rowIndex + 1]) {
+          const buttomLeft = arr[rowIndex + 1][colIndex - 1]
+          if (buttomLeft && buttomLeft.data === '*') result += 1
+          const buttomRight = arr[rowIndex + 1][colIndex + 1]
+          if (buttomRight && buttomRight.data === '*') result += 1
+          const buttomCenter = arr[rowIndex + 1][colIndex]
+          if (buttomCenter && buttomCenter.data === '*') result += 1
+        }
 
-    return String(result)
+        arr[rowIndex][colIndex].data = String(result)
+      }
+    })
   })
+  console.log(arr);
   return arr
 }
 
@@ -55,26 +64,23 @@ export const creatMatrix = (masX, masY, bom) => {
   base = shuffle(base)
   base = shuffle(base)
 
-  base = calculate(base, masX)
-
-  base = base.map((elm, index) => {
-    return {
-      line: 0,
-      col: 0,
+  // 行に分ける
+  base.forEach((elm, index) => {
+    const line = Math.floor(index / masX)
+    const col = index % masX
+    // elm.line = line
+    // elm.col = col
+    if (!matrix[line]) matrix[line] = []
+    matrix[line][col] = {
+      line: line,
+      col: col,
       data: elm,
       isShow: true,
       flg: false
     }
   })
 
-  // 行に分ける
-  base.forEach((elm, index) => {
-    const line = Math.floor(index / masX)
-    const col = index % masX
-    elm.line = line
-    elm.col = col
-    if (!matrix[line]) matrix[line] = []
-    matrix[line][col] = elm
-  })
+  matrix = calculate(matrix)
+
   return matrix
 }
