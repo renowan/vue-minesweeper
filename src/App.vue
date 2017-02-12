@@ -94,15 +94,13 @@
 </template>
 
 <script>
-import dropdown from './components/ui/Dropdown.vue'
 import * as utility from './utility'
 import Mas from './components/Mas'
 
 export default {
   name: 'app',
   components: {
-    Mas,
-    dropdown
+    Mas
   },
   computed: {
     masDebug () {
@@ -127,7 +125,6 @@ export default {
       /* 調整用変数 */
       masX: 10,        // フィールドサイズ X
       masY: 10,        // フィールドサイズ Y
-      bomRate: 0.1,    // 爆弾率
 
       /* 制御用変数 */
       bom: 5,          // 爆弾数
