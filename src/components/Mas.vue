@@ -28,8 +28,12 @@ export default {
     }
   },
   methods: {
-    onClick () {
-      this.$emit('click-mas', this.data)
+    onClick (e) {
+      if (e.shiftKey) {
+        this.$emit('switch-flg', this.data)
+      } else {
+        this.$emit('click-mas', this.data)
+      }
     }
   }
 }

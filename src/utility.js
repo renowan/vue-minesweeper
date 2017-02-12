@@ -41,7 +41,6 @@ export const calculate = (arr, width) => {
       }
     })
   })
-  console.log(arr);
   return arr
 }
 
@@ -75,7 +74,7 @@ export const creatMatrix = (masX, masY, bom) => {
       line: line,
       col: col,
       data: elm,
-      isShow: true,
+      isShow: false,
       flg: false
     }
   })
